@@ -106,10 +106,9 @@ module.exports = {
                   // use the access token to access the Spotify Web API
                   request.get(options, function(error, response, body) {
                       req.session.user = body;
+                      // Redirect the user to the app
+                      res.redirect('/app');
                   });
-
-                  // we can also pass the token to the browser to make requests from there
-                  res.redirect('/app');
               } else {
                   res.redirect('/#' +
                       querystring.stringify({

@@ -41,7 +41,6 @@ var generateRandomString = function(length) {
 };
 
 var stateKey = 'spotify_auth_state';
-
 var app = express();
 var bodyParser = require('body-parser');
 
@@ -52,9 +51,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.engine('jade', require('jade').__express);
-//
-//app.use(express.static(__dirname + '/public'))
-//   .use(cookieParser());
 
 app.get('/login', function(req, res) {
 
@@ -170,14 +166,17 @@ app.post('/search', function(req, res) {
         var firstPage = data.tracks.items;
         console.log('The tracks in the first page are.. (popularity in parentheses)');
         firstPage.forEach(function(track, index) {
-            console.log(index + ': ' + track.name + ' (' + track.popularity + ')');
+            console.log(track);
+        });
+        res.render('results', {
+            tracks: data.tracks.items
         });
 
     }, function(err) {
         console.error(err);
     });
-    res.redirect('/home');
 });
+
 
 console.log('Listening on 8888');
 app.listen(8888);

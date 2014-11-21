@@ -14,7 +14,8 @@ module.exports = {
    */
   home: function (req, res) {
       if (req.session.user) {
-          res.view({username: req.session.user.username});
+          console.log(req.session.user);
+          res.view({user: req.session.user});
       } else {
           res.redirect('/');
       }

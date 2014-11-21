@@ -1,0 +1,2 @@
+#!/bin/sh
+forever stop /home/toeppen/webapps/jamwich/authorization_code/server.js

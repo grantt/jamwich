@@ -1,0 +1,5 @@
+#!/bin/sh
+procs=$(forever list | grep -F /home/toeppen/webapps/jamwich/authorization_code/server.js)
+if [ -z "$procs" ]; then
+    PORT=3000 forever start /home/toeppen/webapps/jamwich/authorization_code/server.js
+fi

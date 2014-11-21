@@ -7,19 +7,6 @@
 
 var request = require('request'); // "Request" library
 var querystring = require('querystring');
-var stateKey = 'spotify_auth_state';
-var client_id = 'e90f69e4b8264e04baddd7b7973575ad'; // Your client id
-var client_secret = '1020e38a5c284be1b4bdbf3c58d97781'; // Your client secret
-var redirect_uri = 'http://localhost:1337/callback'; // Your redirect uri
-
-var SpotifyWebApi = require('spotify-web-api-node');
-
-// credentials are optional
-var spotifyApi = new SpotifyWebApi({
-    clientId : client_id,
-    clientSecret : client_secret,
-    redirectUri : redirect_uri
-});
 
 /**
  * Generates a random string containing numbers and letters
@@ -45,16 +32,14 @@ module.exports = {
    */
   login: function (req, res) {
       var state = generateRandomString(16);
-      res.cookie(stateKey, state);
+      res.cookie(Spotify.state_key, state);
 
-      // your application requests authorization
-      var scope = 'user-read-private user-read-email';
       res.redirect('https://accounts.spotify.com/authorize?' +
           querystring.stringify({
               response_type: 'code',
-              client_id: client_id,
-              scope: scope,
-              redirect_uri: redirect_uri,
+              client_id: Spotify.credentials.client_id,
+              scope: Spotify.scope,
+              redirect_uri: Spotify.redirect_uri,
               state: state
           }));
   },
@@ -69,7 +54,7 @@ module.exports = {
 
       var code = req.query.code || null;
       var state = req.query.state || null;
-      var storedState = req.cookies ? req.cookies[stateKey] : null;
+      var storedState = req.cookies ? req.cookies[Spotify.state_key] : null;
 
       if (state === null || state !== storedState) {
           res.redirect('/#' +
@@ -77,16 +62,16 @@ module.exports = {
                   error: 'state_mismatch'
               }));
       } else {
-          res.clearCookie(stateKey);
+          res.clearCookie(Spotify.state_key);
           var authOptions = {
               url: 'https://accounts.spotify.com/api/token',
               form: {
                   code: code,
-                  redirect_uri: redirect_uri,
+                  redirect_uri: Spotify.redirect_uri,
                   grant_type: 'authorization_code'
               },
               headers: {
-                  'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+                  'Authorization': 'Basic ' + (new Buffer(Spotify.credentials.client_id + ':' + Spotify.credentials.client_secret).toString('base64'))
               },
               json: true
           };

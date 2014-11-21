@@ -19,6 +19,9 @@ module.exports = {
       } else {
           res.redirect('/');
       }
+  },
+  search: function (req, res) {
+
   }
 };
 

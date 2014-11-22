@@ -1,5 +1,18 @@
 // search.jade
 
+append scripts
+    script(type='text/javascript', src='linker/js/app/views/search.js')
+    script.
+        var app = {
+            data: {},
+            views: {}
+        };
+        $(document).ready(function(){
+            // Activate main view
+            Jamwich.initialize(app);
+            app.views.controller = new Jamwich.Views.Search({el:"#search"});
+        });
+
 section#search
     form.form-inline(method='post',action='/search')
         fieldset

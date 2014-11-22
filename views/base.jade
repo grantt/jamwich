@@ -1,7 +1,13 @@
 // base.jade
 html
   head
-    title= title
-    link(rel='stylesheet', href='linker/css/bootstrap.min.css')
+      title= title
+      block styles
+          link(rel='stylesheet', href='linker/css/bootstrap.min.css')
+      block scripts
+          script(type='text/javascript', src='linker/js/jquery-2.1.1.js')
+          script(type='text/javascript', src='linker/js/underscore.js')
+          script(type='text/javascript', src='linker/js/backbone.js')
+          script(type='text/javascript', src='linker/js/app/jamwich.js')
   body
     block content
